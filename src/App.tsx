@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import Root from "./routes/root";
 import Geolocation from "./routes/geolocation";
-import Offline from "./routes/offline/offline";
+import Offline from "./routes/offline";
 import Camera from "./routes/camera";
 import Reachability from "./routes/reachability";
 import DevicePosition from "./routes/device-position";
