@@ -6,6 +6,7 @@ import Offline from "./routes/offline";
 import Camera from "./routes/camera";
 import Reachability from "./routes/reachability";
 import DevicePosition from "./routes/device-position";
+import PWAProvider from "./providers/pwa-provider";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <PWAProvider>
+      <RouterProvider router={router} />
+    </PWAProvider>
+  );
 }
 
 export default App;
