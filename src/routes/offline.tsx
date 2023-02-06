@@ -14,15 +14,14 @@ interface Note {
 const Offline = () => {
   const { getAll } = useIndexedDB("notes");
   const [notes, setNotes] = useState<Note[]>([]);
-  const { add } = useIndexedDB("notes");
+  const { add, deleteRecord } = useIndexedDB("notes");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
   const handleClick = () => {
-    if (title && description) {
+    if (title) {
       add({
         title,
-        description,
       }).then(() => {
         setTitle("");
         setDescription("");
@@ -33,6 +32,16 @@ const Offline = () => {
     }
   };
 
+  const remove = (id: number) => {
+    deleteRecord(id).then(() => {
+      setTitle("");
+      setDescription("");
+      getAll().then((notes: Note[]) => {
+        setNotes(notes);
+      });
+    });
+  };
+
   useEffect(() => {
     getAll().then((notes: Note[]) => {
       setNotes(notes);
@@ -41,26 +50,22 @@ const Offline = () => {
 
   return (
     <Layout>
-      <div>
+      <div style={{ width: "100%" }}>
         <input
+          style={{ width: "100%", fontSize: "26px", marginBottom: "10px" }}
           name="title"
           placeholder="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <br />
-        <input
-          name="description"
-          placeholder="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <br />
         <button onClick={handleClick}>Add</button>
       </div>
       <ul>
-        {notes.map((person) => (
-          <li key={person.id}>{person.title}</li>
+        {notes.map((note) => (
+          <li key={note.id}>
+            {note.title} <button onClick={() => remove(note.id)}>delete</button>
+          </li>
         ))}
       </ul>
     </Layout>

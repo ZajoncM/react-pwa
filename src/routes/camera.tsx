@@ -9,7 +9,7 @@ const Camera = () => {
     <Layout>
       <QrReader
         constraints={{ facingMode: "environment" }}
-        containerStyle={{ width: "100%", height: "500px" }}
+        containerStyle={{ width: "100%", height: "1000px" }}
         onResult={(result) => {
           if (!!result) {
             setData(result?.getText());
