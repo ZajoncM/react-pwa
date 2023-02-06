@@ -30,14 +30,6 @@ const PWAProvider = ({ children }: Props) => {
     },
   });
 
-  //   if (offlineReady)
-  //     return (
-  //       <div>
-  //         <p>You are now offline</p>
-  //         <button onClick={() => setOfflineReady(false)}>continue</button>
-  //       </div>
-  //     );
-
   console.log(offlineReady);
 
   return <>{children}</>;

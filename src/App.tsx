@@ -4,7 +4,6 @@ import Root from "./routes/root";
 import Geolocation from "./routes/geolocation";
 import Offline from "./routes/offline";
 import Camera from "./routes/camera";
-import Reachability from "./routes/reachability";
 import DevicePosition from "./routes/device-position";
 import PWAProvider from "./providers/pwa-provider";
 
@@ -24,10 +23,6 @@ const router = createBrowserRouter([
   {
     path: "/camera",
     element: <Camera />,
-  },
-  {
-    path: "/reachability",
-    element: <Reachability />,
   },
   {
     path: "/device-position",

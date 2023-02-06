@@ -6,9 +6,18 @@ const DevicePosition = () => {
     useState<DeviceOrientationEvent | null>(null);
 
   useEffect(() => {
-    window.addEventListener("deviceorientation", (e) => {
-      setDeviceOrientation(e);
-    });
+    if (window.DeviceOrientationEvent) {
+      alert("orientation supported");
+      window.addEventListener(
+        "deviceorientation",
+        (e) => {
+          setDeviceOrientation(e);
+        },
+        false
+      );
+    } else {
+      console.log("orientation not supported");
+    }
   }, []);
 
   return (
