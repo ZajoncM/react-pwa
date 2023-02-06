@@ -13,6 +13,7 @@ const Root = () => {
       <Link to="geolocation">Geolocation</Link>
       <Link to="offline">Offline notes</Link>
       <Link to="camera">Camera</Link>
+      <Link to="device-position">Device Position</Link>
     </div>
   );
 };
