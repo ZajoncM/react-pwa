@@ -7,7 +7,6 @@ const DevicePosition = () => {
 
   useEffect(() => {
     if (typeof window.DeviceOrientationEvent === "function") {
-      alert("orientation supported");
       window.addEventListener(
         "deviceorientation",
         (e) => {
