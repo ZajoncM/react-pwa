@@ -1,38 +1,48 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { useRegisterSW } from "virtual:pwa-register/react";
+import "./reolad-prompt.css";
 
 interface Props extends PropsWithChildren {}
 
 const PWAProvider = ({ children }: Props) => {
-  const reloadSW = "__RELOAD_SW__";
-  const {
-    offlineReady: [offlineReady, setOfflineReady],
-  } = useRegisterSW({
-    onRegisteredSW(swUrl, r) {
-      // eslint-disable-next-line no-console
-      console.log(`Service Worker at: ${swUrl}`);
-      // @ts-expect-error just ignore
-      if (reloadSW === "true") {
-        r &&
-          setInterval(() => {
-            // eslint-disable-next-line no-console
-            console.log("Checking for sw update");
-            r.update();
-          }, 1 /* 20s for testing purposes */);
-      } else {
-        // eslint-disable-next-line prefer-template,no-console
-        console.log("SW Registered: " + r);
-      }
+  const [offline, setOffline] = useState(false);
+  const { updateServiceWorker } = useRegisterSW({
+    onRegisteredSW(_, r) {
+      r &&
+        setInterval(() => {
+          r.update();
+        }, 500);
     },
-    onRegisterError(error) {
-      // eslint-disable-next-line no-console
-      console.log("SW registration error", error);
+    onNeedRefresh() {
+      console.log("update");
+      updateServiceWorker(true);
     },
   });
 
-  console.log(offlineReady);
+  useEffect(() => {
+    window.addEventListener("offline", () => {
+      setOffline(true);
+    });
 
-  return <>{children}</>;
+    window.addEventListener("online", () => {
+      setOffline(false);
+    });
+  }, []);
+
+  return (
+    <>
+      {children}
+      <div className="ReloadPrompt-container">
+        <div className="ReloadPrompt-toast">
+          <div className="ReloadPrompt-message" style={{ color: "black" }}>
+            <span style={{ color: "black" }}>
+              {offline ? "offline" : "online"}
+            </span>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default PWAProvider;
