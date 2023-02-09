@@ -1,39 +1,62 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Root from "./routes/root";
-import Geolocation from "./routes/geolocation";
-import Offline from "./routes/offline";
-import Camera from "./routes/camera";
-import DevicePosition from "./routes/device-position";
-import PWAProvider from "./providers/pwa-provider";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-  },
-  {
-    path: "/geolocation",
-    element: <Geolocation />,
-  },
-  {
-    path: "/offline",
-    element: <Offline />,
-  },
-  {
-    path: "/camera",
-    element: <Camera />,
-  },
-  {
-    path: "/device-position",
-    element: <DevicePosition />,
-  },
-]);
+import PWAProvider from "./providers/pwa-provider";
+import { Suspense, lazy } from "react";
+
+const Root = lazy(() => import("./routes/root"));
+const Geolocation = lazy(() => import("./routes/geolocation"));
+const Offline = lazy(() => import("./routes/offline"));
+const Camera = lazy(() => import("./routes/camera"));
+const DevicePosition = lazy(() => import("./routes/device-position"));
 
 function App() {
   return (
     <PWAProvider>
-      <RouterProvider router={router} />
+      <BrowserRouter>
+        <Routes>
+          <Route
+            index
+            element={
+              <Suspense fallback={<>...</>}>
+                <Root />
+              </Suspense>
+            }
+          />
+          <Route
+            path="geolocation"
+            element={
+              <Suspense fallback={<>...</>}>
+                <Geolocation />
+              </Suspense>
+            }
+          />
+          <Route
+            path="offline"
+            element={
+              <Suspense fallback={<>...</>}>
+                <Offline />
+              </Suspense>
+            }
+          />
+          <Route
+            path="camera"
+            element={
+              <Suspense fallback={<>...</>}>
+                <Camera />
+              </Suspense>
+            }
+          />
+          <Route
+            path="device-position"
+            element={
+              <Suspense fallback={<>...</>}>
+                <DevicePosition />
+              </Suspense>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
     </PWAProvider>
   );
 }
