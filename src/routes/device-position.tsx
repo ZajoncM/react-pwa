@@ -1,24 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Layout from "../layout/layout";
+import { useMotion } from "react-use";
 
 const DevicePosition = () => {
   const [deviceOrientation, setDeviceOrientation] =
     useState<DeviceOrientationEvent | null>(null);
 
-  useEffect(() => {
-    if (typeof window.DeviceOrientationEvent === "function") {
-      window.addEventListener(
-        "deviceorientation",
-        (e) => {
-          setDeviceOrientation(e);
-        },
-        false
-      );
-    } else {
-      console.log("orientation not supported");
-    }
-  }, []);
+  const state = useMotion();
 
+  console.log(state);
   return (
     <Layout>
       <p style={{ fontSize: "40px" }}>
