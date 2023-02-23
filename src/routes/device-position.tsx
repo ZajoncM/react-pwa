@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import Layout from "../layout/layout";
 
+interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
+  requestPermission?: () => Promise<"granted" | "denied">;
+}
+
+const requestPermission = (
+  DeviceOrientationEvent as unknown as DeviceOrientationEventiOS
+).requestPermission!;
+
 const DevicePosition = () => {
   const [deviceOrientation, setDeviceOrientation] =
     useState<DeviceOrientationEvent | null>(null);
@@ -9,15 +17,11 @@ const DevicePosition = () => {
   const getPermission = () => {
     if (!("DeviceOrientationEvent" in window)) {
       console.log("DeviceOrientationEvent not supported");
-      supWarn.current.style.display = "inline";
       return Promise.resolve("denied");
     }
     console.log("DeviceOrientationEvent exist");
 
-    return (
-      DeviceOrientationEvent?.requestPermission?.() ||
-      Promise.resolve("granted")
-    );
+    return requestPermission() || Promise.resolve("granted");
   };
 
   const handleOrientation = (event: DeviceOrientationEvent) => {
@@ -25,14 +29,12 @@ const DevicePosition = () => {
   };
 
   const handleStart = () => {
-    getPermission()
-      .then((positionAccess) => {
-        if (positionAccess === "granted") {
-          window.addEventListener("deviceorientation", handleOrientation, true);
-          windowListenerExist = true;
-        }
-      })
-      .catch((error) => console.log(error));
+    getPermission().then((positionAccess: any) => {
+      if (positionAccess === "granted") {
+        window.addEventListener("deviceorientation", handleOrientation, true);
+        windowListenerExist = true;
+      }
+    });
   };
 
   useEffect(() => {
